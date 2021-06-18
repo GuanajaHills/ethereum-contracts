@@ -3,10 +3,15 @@ const { expect } = require('chai');
 describe('GHIToken', function () {
   before(async function () {
     this.GHIToken = await ethers.getContractFactory('GHIToken');
+    // Select some test accounts.
+    const signers = await ethers.getSigners();
+    this.deployer = signers[0]; // Account used during deployment.
+    this.owner = signers[1]; // Account specified as contract owner.
+    this.user = signers[2]; // Account of a random user.
   });
 
   beforeEach(async function () {
-    this.token = await upgrades.deployProxy(this.GHIToken, { initializer: 'initialize' });
+    this.token = await upgrades.deployProxy(this.GHIToken, [this.owner.address], { initializer: 'initialize' });
     await this.token.deployed();
   });
 
@@ -25,19 +30,28 @@ describe('GHIToken', function () {
     expect(supply).to.equal(100 * 1000 * 1000);
   });
 
+  it('should have given initial supply to contract owner', async function () {
+    const supply = await this.token.balanceOf(this.owner.address);
+    expect(supply).to.equal(100 * 1000 * 1000);
+  });
+
   it('should have no decimal places', async function () {
     const decimals = await this.token.decimals();
     expect(decimals).to.equal(0);
   });
 
-  it('should allow contract deployer to create snapshots', async function () {
-    const receipt = await this.token.snapshot();
+  it('should allow contract owner to create snapshots', async function () {
+    const receipt = await this.token.connect(this.owner).snapshot();
     await expect(receipt).to.emit(this.token, 'Snapshot');
   });
 
+  it('should not allow contract deployer to create snapshots', async function () {
+    const promise = this.token.snapshot();
+    await expect(promise).to.be.revertedWith('GHIToken: snapshot role required');
+  });
+
   it('should not allow creating snapshots without snapshot role', async function () {
-    const signers = await ethers.getSigners();
-    const promise = this.token.connect(signers[1]).snapshot();
+    const promise = this.token.connect(this.user).snapshot();
     await expect(promise).to.be.revertedWith('GHIToken: snapshot role required');
   });
 

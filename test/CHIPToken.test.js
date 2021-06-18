@@ -3,10 +3,15 @@ const { expect } = require('chai');
 describe('CHIPToken', function () {
   before(async function () {
     this.CHIPToken = await ethers.getContractFactory('CHIPToken');
+    // Select some test accounts.
+    const signers = await ethers.getSigners();
+    this.deployer = signers[0]; // Account used during deployment.
+    this.owner = signers[1]; // Account specified as contract owner.
+    this.user = signers[2]; // Account of a random user.
   });
 
   beforeEach(async function () {
-    this.token = await upgrades.deployProxy(this.CHIPToken, { initializer: 'initialize' });
+    this.token = await upgrades.deployProxy(this.CHIPToken, [this.owner.address], { initializer: 'initialize' });
     await this.token.deployed();
   });
 
@@ -30,16 +35,21 @@ describe('CHIPToken', function () {
     expect(decimals).to.equal(2);
   });
 
-  it('should allow contract deployer to mint new token', async function () {
-    const signers = await ethers.getSigners();
-    await this.token.mint(signers[0].address, 999);
+  it('should allow contract owner to mint new token', async function () {
+    await this.token.connect(this.owner).mint(this.user.address, 999);
     const supply = await this.token.totalSupply();
     expect(supply).to.equal(999);
   });
 
+  it('should not allow contract deployer mint new token', async function () {
+    const promise = this.token.mint(this.user.address, 999);
+    await expect(promise).to.be.revertedWith('CHIPToken: minter role required');
+    const supply = await this.token.totalSupply();
+    expect(supply).to.equal(0);
+  });
+
   it('should not allow minting without minter role', async function () {
-    const signers = await ethers.getSigners();
-    const promise = this.token.connect(signers[1]).mint(signers[0].address, 999);
+    const promise = this.token.connect(this.user).mint(this.user.address, 999);
     await expect(promise).to.be.revertedWith('CHIPToken: minter role required');
     const supply = await this.token.totalSupply();
     expect(supply).to.equal(0);
@@ -47,8 +57,7 @@ describe('CHIPToken', function () {
 
   it('should be upgradable', async function () {
     // Pre-upgrade state.
-    const signers = await ethers.getSigners();
-    await this.token.mint(signers[0].address, 999);
+    await this.token.connect(this.owner).mint(this.user.address, 999);
     // Upgrade.
     const CHIPTokenUpgrade = await ethers.getContractFactory('CHIPTokenUpgrade');
     const upgradedToken = await upgrades.upgradeProxy(this.token.address, CHIPTokenUpgrade);

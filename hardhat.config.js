@@ -23,8 +23,14 @@ task('accounts', 'Prints the list of accounts', async () => {
 module.exports = {
   networks: {
     rinkeby: {
-      url: process.env.ALCHEMY_API_RINKEBY_KEY_HTTP,
+      url: process.env.RINKEBY_NETWORK_URL,
       accounts: { mnemonic: process.env.TESTNET_MNEMONIC },
+      gasPrice: process.env.GAS_PRICE || 'auto',
+    },
+    mainnet: {
+      url: process.env.MAINNET_NETWORK_URL,
+      accounts: { mnemonic: process.env.MAINNET_MNEMONIC },
+      gasPrice: process.env.GAS_PRICE || 'auto',
     },
   },
   defender: {

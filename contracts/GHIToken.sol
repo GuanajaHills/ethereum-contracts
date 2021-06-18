@@ -9,18 +9,18 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 contract GHIToken is ERC20Upgradeable, ERC20SnapshotUpgradeable, AccessControlUpgradeable {
     bytes32 public constant SNAPSHOT_ROLE = keccak256("SNAPSHOT_ROLE");
 
-    function initialize() public initializer {
+    function initialize(address _owner) public initializer {
         __ERC20_init("Guanaja Hills Investment Token", "GHI");
         // To ensure Context contract is not initialized multiple times, we call
         // the inherited initialize functions individually (unchained).
         __ERC20Snapshot_init_unchained();
         __ERC165_init_unchained();
         __AccessControl_init_unchained();
-        // Assign all roles to contract deployer.
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _setupRole(SNAPSHOT_ROLE, msg.sender);
+        // Assign all roles to contract owner.
+        _setupRole(DEFAULT_ADMIN_ROLE, _owner);
+        _setupRole(SNAPSHOT_ROLE, _owner);
         // 100 million GHI will be minted, no public minting function -> capped.
-        _mint(msg.sender, 100000000);
+        _mint(_owner, 100000000);
     }
 
     function decimals() public pure override returns (uint8) {
