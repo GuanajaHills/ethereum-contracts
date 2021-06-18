@@ -3,6 +3,9 @@ async function main () {
   const ownerAddress = process.env.OWNER_ADDRESS;
   if (!ownerAddress) throw new Error('OWNER_ADDRESS env var missing');
 
+  // NOTE: If it times out while polling for the transaction to be mined (TransactionMinedTimeout), comment out the
+  // calls that have already succeeded and rerun the deployProxy() calls that threw the exception.
+
   // Deploy GHI Token.
   const GHIToken = await ethers.getContractFactory('GHIToken');
   const ghiToken = await upgrades.deployProxy(GHIToken, [ownerAddress], { initializer: 'initialize' });

@@ -25,12 +25,12 @@ module.exports = {
     rinkeby: {
       url: process.env.RINKEBY_NETWORK_URL,
       accounts: { mnemonic: process.env.TESTNET_MNEMONIC },
-      gasPrice: process.env.GAS_PRICE || 'auto',
+      gasPrice: parseInt(process.env.GAS_PRICE, 10) || 'auto',
     },
     mainnet: {
       url: process.env.MAINNET_NETWORK_URL,
       accounts: { mnemonic: process.env.MAINNET_MNEMONIC },
-      gasPrice: process.env.GAS_PRICE || 'auto',
+      gasPrice: parseInt(process.env.GAS_PRICE, 10) || 'auto',
     },
   },
   defender: {
