@@ -8,7 +8,7 @@ This repository contains all Ethereum Contracts of the Guanaja Hills Association
 
 ## Token Contracts
 
-Tokens are currently distributed in a closed ICO. If you are interested, please inquire at [GuanajaHills.com](https://guanajahills.com/inquiry)
+Tokens are currently distributed in a closed private sale. If you are interested, please inquire at [GuanajaHills.com](https://guanajahills.com/inquiry)
 
 ### Guanaja Hills Investment Token (GHI)
 
@@ -30,7 +30,7 @@ Tokens are currently distributed in a closed ICO. If you are interested, please 
 
 ## Security disclosure contact
 
-We use [OpenZeppelin Contracts](https://github.com/OpenZeppelin/openzeppelin-contracts) as a basis, which is the community-vetted standard for smart contract development and are regularly audited.
+We use [OpenZeppelin Contracts](https://github.com/OpenZeppelin/openzeppelin-contracts) as a basis, which is the community-vetted standard for smart contract development and is regularly audited.
 
 Please report any security issues you find to security@guanajahills.com.
 
