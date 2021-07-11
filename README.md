@@ -2,6 +2,7 @@
 
 # Guanaja Hills Ethereum Contracts
 
+[![Lint](https://github.com/GuanajaHills/ethereum-contracts/actions/workflows/lint.yaml/badge.svg)](https://github.com/GuanajaHills/ethereum-contracts/actions/workflows/lint.yaml)
 [![Test](https://github.com/GuanajaHills/ethereum-contracts/actions/workflows/test.yml/badge.svg)](https://github.com/GuanajaHills/ethereum-contracts/actions/workflows/test.yml) [![codecov](https://codecov.io/gh/GuanajaHills/ethereum-contracts/branch/master/graph/badge.svg?token=VHOBBYCAYI)](https://codecov.io/gh/GuanajaHills/ethereum-contracts)
 
 This repository contains all Ethereum Contracts of the Guanaja Hills Association.
