@@ -1,6 +1,11 @@
 {
   "name": "guanaja-hills-ethereum-contracts",
   "license": "MIT",
+  "scripts": {
+    "compile": "hardhat compile",
+    "coverage": "hardhat coverage",
+    "test": "hardhat test"
+  },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
