@@ -21,21 +21,24 @@ task('accounts', 'Prints the list of accounts', async () => {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  networks: {
-    rinkeby: {
-      url: process.env.RINKEBY_NETWORK_URL,
-      accounts: { mnemonic: process.env.TESTNET_MNEMONIC },
-      gasPrice: parseInt(process.env.GAS_PRICE, 10) || 'auto',
-    },
-    mainnet: {
-      url: process.env.MAINNET_NETWORK_URL,
-      accounts: { mnemonic: process.env.MAINNET_MNEMONIC },
-      gasPrice: parseInt(process.env.GAS_PRICE, 10) || 'auto',
-    },
-  },
+  solidity: '0.8.3',
+  networks: {},
   defender: {
     apiKey: process.env.DEFENDER_TEAM_API_KEY,
     apiSecret: process.env.DEFENDER_TEAM_API_SECRET_KEY,
   },
-  solidity: '0.8.3',
 };
+if (process.env.RINKEBY_NETWORK_URL) {
+  module.exports.networks.rinkeby = {
+    url: process.env.RINKEBY_NETWORK_URL,
+    accounts: { mnemonic: process.env.TESTNET_MNEMONIC },
+    gasPrice: parseInt(process.env.GAS_PRICE, 10) || 'auto',
+  };
+}
+if (process.env.MAINNET_NETWORK_URL) {
+  module.exports.networks.mainnet = {
+    url: process.env.MAINNET_NETWORK_URL,
+    accounts: { mnemonic: process.env.MAINNET_MNEMONIC },
+    gasPrice: parseInt(process.env.GAS_PRICE, 10) || 'auto',
+  };
+}
